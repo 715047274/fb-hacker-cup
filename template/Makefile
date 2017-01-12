@@ -1,16 +1,25 @@
-CFLAGS = -g -Wall -I./
+SRC    = main
+INPUT  = input.txt
+OUTPUT = output.txt
+CFLAGS = -g -Wall -I./ -I../mocha/
+OBJS   = $(SRC).o ../mocha/mocha.o
 
-ifdef debug
-CFLAGS += -DDEBUG
-endif
+all: clean output
 
-all: clean run
+debug: clean
+	$(CC) $(CFLAGS) -DDEBUG -c $(SRC).c
+	$(CC) $(CFLAGS) -DDEBUG $(OBJS) -o $@.exe
+	cat $(INPUT) | ./$@.exe
 
-run: main.exe
-	@./main.exe
+test: clean ../mocha/mocha.o
+	$(CC) $(CFLAGS) -DTEST -c $(SRC).c
+	$(CC) $(CFLAGS) -DTEST $(OBJS) -o $@.exe
+	./$@.exe
 
-main.exe: main.o
-	$(CC) $(CFLAGS) -o $@ main.o
+output: clean
+	$(CC) $(CFLAGS) -c $(SRC).c
+	$(CC) $(CFLAGS) $(OBJS) -o $(SRC).exe
+	cat $(INPUT) | ./$(SRC).exe > $(OUTPUT)
 
 clean:
 	rm -rf *.o *.exe

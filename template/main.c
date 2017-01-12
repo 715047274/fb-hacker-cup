@@ -4,32 +4,37 @@
 #include <string.h>
 #include <math.h>
 
+#ifdef TEST
+#include "mocha.h"
+int test_case () {
+    assert(1 == 1);
+    assert(2 == 2);
+    return 0;
+}
+#endif
+
 int main () {
-    struct {
-        FILE * in;
-        FILE * out;
-    } stream = {
-        .in  = stdin,
-        .out = stdout
-    };
+#ifdef TEST
+    describe(
+        "test case",
+        test_case
+    );
+    return 0;
+#endif
 
 #ifdef DEBUG
-    stream.in = fopen("input.txt", "r");
-    // stream.out = fopen("output.txt", "w");
+    printf("Debug Messages\n");
 #endif
 
     int T;
-    fscanf(stream.in, "%d", &T);
+    scanf("%d", &T);
     for (int caseIndex = 1; caseIndex <= T; caseIndex++) {
 
         /* Parser */
 
         // print result
-        fprintf(stream.out, "Case #%d: ___\n", caseIndex);
+        printf("Case #%d: ___\n", caseIndex);
     }
 
-    // close stream
-    fclose(stream.in);
-    fclose(stream.out);
     return 0;
 }
