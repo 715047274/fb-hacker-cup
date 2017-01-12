@@ -85,19 +85,6 @@ int same_zone () {
 #endif
 
 int main () {
-    struct {
-        FILE * in;
-        FILE * out;
-    } stream = {
-        .in  = stdin,
-        .out = stdout
-    };
-
-#ifdef DEBUG
-    stream.in  = fopen("input.txt", "r");
-    // stream.out = fopen("output.txt", "w");
-#endif
-
 #ifdef TEST
     describe(
         "Progress Pie",
@@ -111,18 +98,16 @@ int main () {
 #endif
 
     int T;
-    fscanf(stream.in, "%d", &T);
+    scanf("%d", &T);
     for (int caseIndex = 1; caseIndex <= T; caseIndex++) {
 
         int P, X, Y;
-        fscanf(stream.in, "%d %d %d", &P, &X, &Y);
+        scanf("%d %d %d", &P, &X, &Y);
 
         // show result
-        fprintf(stream.out, "Case #%d: %s\n", caseIndex, isInside(P, X, Y) ? "black" : "white");
+        printf("Case #%d: %s\n", caseIndex, isInside(P, X, Y) ? "black" : "white");
     }
 
-    fclose(stream.in);
-    fclose(stream.out);
     return 0;
 }
 
