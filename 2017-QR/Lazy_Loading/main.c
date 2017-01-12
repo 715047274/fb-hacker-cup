@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 #include <string.h>
 #include <math.h>
 
@@ -52,18 +53,6 @@ int many_big () {
 #endif
 
 int main () {
-    struct {
-        FILE * in;
-        FILE * out;
-    } stream = {
-        .in  = stdin,
-        .out = stdout
-    };
-
-#ifdef DEBUG
-    stream.in = fopen("input.txt", "r");
-    // stream.out = fopen("output.txt", "w");
-#endif
 
 #ifdef TEST
     describe(
@@ -76,27 +65,25 @@ int main () {
 #endif
 
     int T;
-    fscanf(stream.in, "%d", &T);
+    scanf("%d", &T);
     for (int caseIndex = 1; caseIndex <= T; caseIndex++) {
 
         int N;
-        fscanf(stream.in, "%d", &N);
+        scanf("%d", &N);
 
         int W[100] = {};
         for (int i = 0; i < N; i++) {
-            fscanf(stream.in, "%d", &W[i]);
+            scanf("%d", &W[i]);
         }
 
-#if (DEBUG == 2)
-        fprintf(stream.out, "Case #%d:\n", caseIndex);
+#ifdef DEBUG
+        printf("Case #%d:\n", caseIndex);
         max_trip(W, N);
 #else
-        fprintf(stream.out, "Case #%d: %d\n", caseIndex, max_trip(W, N));
+        printf("Case #%d: %d\n", caseIndex, max_trip(W, N));
 #endif
     }
 
-    fclose(stream.in);
-    fclose(stream.out);
     return 0;
 }
 
@@ -121,13 +108,13 @@ int max_trip (int W[100], int N) {
         }
 
         if (j - i + 1 < Criteria[level].k) {
-#if (DEBUG == 2)
+#ifdef DEBUG
             printf("too short\n");
 #endif
             break;
         }
 
-#if (DEBUG == 2)
+#ifdef DEBUG
         printf("%2d. %d ", counter + 1, W[i]);
         for (int k = j; k > j - Criteria[level].k + 1; k--) {
             printf("%d ", W[k]);
@@ -140,7 +127,7 @@ int max_trip (int W[100], int N) {
         j = j - Criteria[level].k + 1;
     }
 
-#if (DEBUG == 2)
+#ifdef DEBUG
     int remain = j - i + 1;
     printf("Remain List (%d): ", remain);   // i ~ j
     for (int k = i; k <=j; k++) {
