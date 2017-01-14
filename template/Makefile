@@ -1,8 +1,9 @@
 SRC    = main
 INPUT  = input.txt
 OUTPUT = output.txt
-CFLAGS = -g -Wall -I./ -I../mocha/
-OBJS   = $(SRC).o ../mocha/mocha.o
+MOCHA  = ../../mocha
+CFLAGS = -g -Wall -I./ -I$(MOCHA)
+OBJS   = $(SRC).o $(MOCHA)/mocha.o
 
 all: clean output
 
@@ -11,7 +12,7 @@ debug: clean
 	$(CC) $(CFLAGS) -DDEBUG $(OBJS) -o $@.exe
 	cat $(INPUT) | ./$@.exe
 
-test: clean ../mocha/mocha.o
+test: clean $(MOCHA)/mocha.o
 	$(CC) $(CFLAGS) -DTEST -c $(SRC).c
 	$(CC) $(CFLAGS) -DTEST $(OBJS) -o $@.exe
 	./$@.exe
